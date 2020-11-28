@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. colors
+. /etc/update-motd.d/colors
 
 # set column width
 COLUMNS=3

@@ -98,9 +98,21 @@ _samba() {
 
 EOF
 
-	echo -ne "$pass\n$pass\n" | smbpasswd -a $user
+	echo -ne "$pass\n$pass\n" | smbpasswd -a $user > /dev/null
 
 	echo_success "Samba successfully installed..."
+
+}
+
+_motd() {
+
+	echo_progress_start "Installing the MOTD script"
+	cp scripts/update-motd.d/* /etc/update-motd.d/
+	chmod +x /etc/update-motd.d/*
+
+	sed -i 's/motd=\/run\/motd.dynamic/motd=\/run\/motd.dynamic.new/' /etc/pam.d/sshd
+
+	echo_success "MOTD has been installed, you can edit /etc/update-motd.d/40-services..."
 
 }
 
@@ -110,3 +122,4 @@ _basic-setup
 _general-install
 _ssh
 _samba
+_motd
