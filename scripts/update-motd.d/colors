@@ -1,0 +1,8 @@
+black="\e[0m"
+purple="\e[35m"
+red="\e[31m"
+green="\e[32m"
+yellow="\e[33m"
+blue="\e[34m"
+purplelight="\e95m"
+white="\e[39m"
