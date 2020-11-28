@@ -1,5 +1,7 @@
 #! /bin/bash
 
+## Credits to swizzin for this file
+
 # A little tool to help make more stylish bash output with colours and indentation
 
 export bell="true"                 # Whether or not Warning and Error should trigger the bell
