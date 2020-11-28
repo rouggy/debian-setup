@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. /etc/update-motd.d/colors
+. colors
 
 # config
 max_usage=90

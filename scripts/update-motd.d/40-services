@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. /etc/update-motd.d/colors
+. colors
 
 # set column width
 COLUMNS=3
@@ -9,7 +9,7 @@ COLUMNS=3
 #red="\e[1;31m"
 #undim="\e[0m"
 
-services=("fail2ban" "rtorrent" "rtorrent2" "rtorrent3" "rtorrent4" "rtorrent5" "rtorrent6" "rtorrent7" "syncthing@rouggy")
+services=("")
 # sort services
 IFS=$'\n' services=($(sort <<<"${services[*]}"))
 unset IFS

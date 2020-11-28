@@ -1,7 +1,6 @@
 #!/bin/bash
 
 . sources/colors
-. install/
 
 _pre-install() {
 
@@ -13,6 +12,10 @@ _pre-install() {
 
 _basic-setup() {
 
+	echo_query "User:"
+	read user
+	echo_query "Password:"
+	read pass
 	echo_query "IP Address:"
 	read ip
 	echo_progress_start "IP Address is: $ip"
@@ -43,5 +46,67 @@ EOF
 
 }
 
+_general-install() {
+
+	echo_progress_start "Installing basic programs"
+	apt-get -q -y install ncdu htop dnsutils net-tools git curl figlet lolcat samba > /dev/null
+	echo_success "All general programs have been installed..."
+}
+
+_ssh() {
+
+        if [[ ! -z $(which ssh) ]]; then
+                echo_progress_start "Setting up SSH..."
+                echo "PermitRootLogin yes" >> /etc/ssh/sshd_config
+        else
+                echo_warn "SSH is not installed..."
+        fi
+
+        echo_progress_start "Restarting SSH Service..."
+        service ssh restart
+        echo_success "SSH is properly configured"
+}
+
+_samba() {
+
+	echo_progress_start "Installing Samba..."
+
+	cat > /etc/samba/smb.conf << EOF
+
+[global]
+   workgroup = WORKGROUP
+
+   log file = /var/log/samba/log.%m
+   max log size = 1000
+   logging = file
+   panic action = /usr/share/samba/panic-action %d
+   server role = standalone server
+   obey pam restrictions = yes
+   unix password sync = yes
+   passwd program = /usr/bin/passwd %u
+   passwd chat = *Enter\snew\s*\spassword:* %n\n *Retype\snew\s*\spassword:* %n\n *password\supdated\ssuccessfully* .
+   pam password change = yes
+   map to guest = bad user
+
+[homes]
+   comment = Home Directories
+   browseable = no
+   read only = no
+   create mask = 0700
+   directory mask = 0700
+   valid users = %S
+
+EOF
+
+	echo -ne "$pass\n$pass\n" | smbpasswd -a $user
+
+	echo_success "Samba successfully installed..."
+
+}
+
+
 _pre-install
 _basic-setup
+_general-install
+_ssh
+_samba
