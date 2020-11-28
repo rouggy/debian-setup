@@ -123,3 +123,5 @@ _general-install
 _ssh
 _samba
 _motd
+
+echo_info "Thanks to reboot your machine to finish the setup"
