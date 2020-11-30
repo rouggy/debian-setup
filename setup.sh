@@ -49,6 +49,7 @@ EOF
 _general-install() {
 
 	echo_progress_start "Installing basic programs"
+	echo "samba-common samba-common/dhcp boolean false" | debconf-set-selections
 	apt-get -q -y install ncdu htop dnsutils net-tools git curl figlet lolcat samba > /dev/null
 	echo_success "All general programs have been installed..."
 }
